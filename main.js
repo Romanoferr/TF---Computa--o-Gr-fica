@@ -6,8 +6,7 @@ import Shader from './shader.js';
 var objFileContent;
 
 class Scene {
-  constructor(gl, fileC) {
-    
+  constructor(gl) {
     this.objData = [];
     
     this.mat = mat4.create();
@@ -21,6 +20,29 @@ class Scene {
 
     this.init(gl);
     this.fetchOBJFile(gl);
+  }
+
+  init(gl) {
+    this.createShaderProgram(gl);
+    this.createUniforms(gl);
+  }
+
+  createShaderProgram(gl) {
+    this.vertShd = Shader.createShader(gl, gl.VERTEX_SHADER, vertShaderSrc);
+    this.fragShd = Shader.createShader(gl, gl.FRAGMENT_SHADER, fragShaderSrc);
+    this.program = Shader.createProgram(gl, this.vertShd, this.fragShd);
+
+    gl.useProgram(this.program);
+  }
+
+  createUniforms(gl) {
+    this.matLoc = gl.getUniformLocation(this.program, "u_mat");
+
+    this.uniformTranslate = gl.getUniformLocation(this.program, "u_T");
+    gl.uniform1f(this.uniformTranslate, 0.5);
+
+    this.uniformScale = gl.getUniformLocation(this.program, "u_S");
+    gl.uniform1f(this.uniformScale, 0.5);
   }
 
   loadOBJFile(objFileName) {
@@ -53,33 +75,18 @@ class Scene {
     }
   }
 
-  init(gl) {
-    this.createShaderProgram(gl);
-    this.createUniforms(gl);
-  }
-
-  createShaderProgram(gl) {
-    this.vertShd = Shader.createShader(gl, gl.VERTEX_SHADER, vertShaderSrc);
-    this.fragShd = Shader.createShader(gl, gl.FRAGMENT_SHADER, fragShaderSrc);
-    this.program = Shader.createProgram(gl, this.vertShd, this.fragShd);
-
-    gl.useProgram(this.program);
-  }
-
-  createUniforms(gl) {
-    this.matLoc = gl.getUniformLocation(this.program, "u_mat");
-
-    this.uniformTranslate = gl.getUniformLocation(this.program, "u_T");
-    gl.uniform1f(this.uniformTranslate, 0.5);
-
-    this.uniformScale = gl.getUniformLocation(this.program, "u_S");
-    gl.uniform1f(this.uniformScale, 0.5);
+  preParseData(data){
+    data = data.split('\n');
+    console.log(data);
+    return data
   }
 
   loadOBJ(file) {
     var vertices = [];
     var normals = [];
     var indices = [];
+
+    file = this.preParseData(file);
   
     for (var i = 0; i < file.length; i++) {
       var line = file[i];
@@ -110,12 +117,11 @@ class Scene {
         }
       }
     }
-    // console.log(vertices, normals, indices);
     return { vertices, normals, indices };
   }
 
   renderScene(gl, objFileContent) {
-    console.log(objFileContent);
+    // console.log(objFileContent);
     var objData = this.loadOBJ(objFileContent);
     var objVBO = Shader.createVertexBufferObject(gl, objData);
     gl.bindBuffer(gl.ARRAY_BUFFER, objVBO.vbo);
@@ -150,6 +156,7 @@ class Scene {
   // Desligar o VBO
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
   }
 
   objectTransformation(gl) {}
