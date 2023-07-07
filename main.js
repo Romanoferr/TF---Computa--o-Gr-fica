@@ -3,9 +3,11 @@ import fragShaderSrc from './simple.frag.js';
 
 import Shader from './shader.js';
 
+var objFileContent;
+
 class Scene {
   constructor(gl, fileC) {
-    this.fetchOBJFile();
+    
     this.objData = [];
     
     this.mat = mat4.create();
@@ -18,6 +20,7 @@ class Scene {
     this.vaoLoc = -1;
 
     this.init(gl);
+    this.fetchOBJFile(gl);
   }
 
   loadOBJFile(objFileName) {
@@ -29,7 +32,7 @@ class Scene {
           if (xhr.status === 200) {
             resolve(xhr.responseText);
           } else {
-            reject(new Error("Error loading OBJ file: " + xhr.status));
+            reject(new Error("Error loading file: " + xhr.status));
           }
         }
       };
@@ -40,10 +43,10 @@ class Scene {
   }
   
   // Usage de async/await
-  async fetchOBJFile() {
+  async fetchOBJFile(gl) {
     try {
-      var objFileContent = await this.loadOBJFile('inputs/bunny.obj');
-      console.log(objFileContent);
+      objFileContent = await this.loadOBJFile('inputs/bunny.obj');
+      this.renderScene(gl, objFileContent);
     
     } catch (error) {
       console.log(error);
@@ -52,7 +55,6 @@ class Scene {
 
   init(gl) {
     this.createShaderProgram(gl);
-    this.renderScene(gl);
     this.createUniforms(gl);
   }
 
@@ -108,12 +110,13 @@ class Scene {
         }
       }
     }
-    console.log(vertices);
+    // console.log(vertices, normals, indices);
     return { vertices, normals, indices };
   }
 
-  renderScene(gl) {
-    objData = this.loadOBJ(objFileContent);
+  renderScene(gl, objFileContent) {
+    console.log(objFileContent);
+    var objData = this.loadOBJ(objFileContent);
     var objVBO = Shader.createVertexBufferObject(gl, objData);
     gl.bindBuffer(gl.ARRAY_BUFFER, objVBO.vbo);
 
