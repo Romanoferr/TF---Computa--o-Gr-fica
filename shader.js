@@ -37,13 +37,14 @@ export default class Shader {
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
   
     // Carregar os dados dos vértices para o VBO
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objData.vertices), gl.STATIC_DRAW);
+      // Calcular corretamente a quantidade de bytes em objData.indices?
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objData.vertices), gl.STATIC_DRAW); // checar tamanho
   
     // Configurar o atributo de posição dos vértices
-    var positionAttributeLocation = 0; //TODO: check
+    var positionAttributeLocation = 1; //TODO: check pq quando coloca 0 isso aqui some?
     var positionSize = 3; // Os vértices têm 3 componentes (x, y, z)
     var positionType = gl.FLOAT; // O tipo de dado dos vértices
-    var positionNormalize = false; // Não normalizar os dados
+    var positionNormalize = false;
     var positionStride = 0;
     var positionOffset = 0;
     gl.vertexAttribPointer(
@@ -60,6 +61,7 @@ export default class Shader {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
   
     // Carregar os dados dos índices
+        // Calcular corretamente a quantidade de bytes em objData.indices?
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(objData.indices), gl.STATIC_DRAW);
   
     // Desligar o VBO

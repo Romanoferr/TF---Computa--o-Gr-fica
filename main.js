@@ -81,6 +81,7 @@ class Scene {
   }
 
   loadOBJ(file) {
+    var vertices = new Float32Array();
     var vertices = [];
     var normals = [];
     var indices = [];
@@ -126,25 +127,26 @@ class Scene {
 
     console.log(objData);
     var objVBO = Shader.createVertexBufferObject(gl, objData);
+
+    // Ligar Buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, objVBO.vbo);
 
-      // Configurar o atributo de posição dos vértices
-  var positionAttributeLocation = 0;
-  var positionSize = 3; // Os vértices têm 3 componentes (x, y, z)
-  var positionType = gl.FLOAT; // O tipo de dado dos vértices
-  var positionNormalize = false; // Não normalizar os dados
-  var positionStride = 0; // 0 = usar o tamanho padrão do tipo de dado e número de componentes
-  var positionOffset = 0; // Começar no início do buffer de vértices
-  
-  gl.vertexAttribPointer(
-    positionAttributeLocation,
-    positionSize,
-    positionType,
-    positionNormalize,
-    positionStride,
-    positionOffset
-  );
-  gl.enableVertexAttribArray(positionAttributeLocation);
+    var positionAttributeLocation = 0; // O QUE ISSO FAZ?
+    var positionSize = 3; // Os vértices têm 3 componentes (x, y, z)
+    var positionType = gl.FLOAT; // O tipo de dado dos vértices
+    var positionNormalize = true; // Não normalizar os dados
+    var positionStride = 0; // 0 = usar o tamanho padrão do tipo de dado e número de componentes
+    var positionOffset = 0; // Começar no início do buffer de vértices
+    
+    gl.vertexAttribPointer(
+      positionAttributeLocation,
+      positionSize,
+      positionType,
+      positionNormalize,
+      positionStride,
+      positionOffset
+    );
+    gl.enableVertexAttribArray(positionAttributeLocation);
 
   // Ligar o buffer de índices
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objVBO.indexBuffer);
@@ -156,13 +158,10 @@ class Scene {
   gl.drawElements(primitiveType, count, gl.UNSIGNED_SHORT, offset);
 
   // Desligar o VBO
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  // gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
   }
-
-  objectTransformation(gl) {}
-
 }
 
 class Main {
