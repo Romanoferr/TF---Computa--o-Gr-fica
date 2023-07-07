@@ -37,12 +37,6 @@ class Scene {
 
   createUniforms(gl) {
     this.matLoc = gl.getUniformLocation(this.program, "u_mat");
-
-    this.uniformTranslate = gl.getUniformLocation(this.program, "u_T");
-    gl.uniform1f(this.uniformTranslate, 0.5);
-
-    this.uniformScale = gl.getUniformLocation(this.program, "u_S");
-    gl.uniform1f(this.uniformScale, 0.5);
   }
 
   loadOBJFile(objFileName) {
@@ -152,14 +146,15 @@ class Scene {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objVBO.indexBuffer);
 
   // Renderizar os vértices
-  var primitiveType = gl.TRIANGLES;
+  var primitiveType = gl.LINES;
   var offset = 0;
   var count = objVBO.numIndices;
+
   gl.drawElements(primitiveType, count, gl.UNSIGNED_SHORT, offset);
 
-  // Desligar o VBO
-  // gl.bindBuffer(gl.ARRAY_BUFFER, null);
-  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  // Desligar so VBO
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
   }
 }
