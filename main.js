@@ -110,15 +110,15 @@ class Scene {
   
         for (var j = 1; j < values.length; j++) {
           var vertexData = values[j].split("/");
-          var vertexIndex = parseInt(vertexData[0]); 
+          var vertexIndex = parseInt(vertexData[0]) - 1; // Não tenho ideia pq subtrai 1 mas funcionou (indices começam na 1?)
           indices.push(vertexIndex);
         }
       }
     }
 
-    console.log(vertices);
-    console.log(normals);
-    console.log(indices);
+    console.log('vertices: ', vertices);
+    console.log('normals: ', normals);
+    console.log('indices: ', indices);
     return { vertices, normals, indices };
   }
 
