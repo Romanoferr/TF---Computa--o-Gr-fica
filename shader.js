@@ -40,12 +40,12 @@ export default class Shader {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objData.vertices), gl.STATIC_DRAW);
   
     // Configurar o atributo de posição dos vértices
-    var positionAttributeLocation = 0;
+    var positionAttributeLocation = 0; //TODO: check
     var positionSize = 3; // Os vértices têm 3 componentes (x, y, z)
     var positionType = gl.FLOAT; // O tipo de dado dos vértices
     var positionNormalize = false; // Não normalizar os dados
-    var positionStride = 0; // 0 = usar o tamanho padrão do tipo de dado e número de componentes
-    var positionOffset = 0; // Começar no início do buffer de vértices
+    var positionStride = 0;
+    var positionOffset = 0;
     gl.vertexAttribPointer(
       positionAttributeLocation,
       positionSize,
@@ -54,7 +54,7 @@ export default class Shader {
       positionStride,
       positionOffset
     );
-    gl.enableVertexAttribArray(positionAttributeLocation);
+    gl.enableVertexAttribArray(positionAttributeLocation); // TODO: check
   
     // Ligar o buffer de índices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

@@ -77,7 +77,6 @@ class Scene {
 
   preParseData(data){
     data = data.split('\n');
-    console.log(data);
     return data
   }
 
@@ -86,7 +85,9 @@ class Scene {
     var normals = [];
     var indices = [];
 
-    file = this.preParseData(file);
+    var file = this.preParseData(file);
+
+    console.log(file);
   
     for (var i = 0; i < file.length; i++) {
       var line = file[i];
@@ -105,24 +106,25 @@ class Scene {
         normals.push(x, y, z);
       } else if (line.startsWith("f ")) {
         var values = line.split(" ");
-        var faceIndices = [];
   
         for (var j = 1; j < values.length; j++) {
           var vertexData = values[j].split("/");
-          var vertexIndex = parseInt(vertexData[0]) - 1; // Subtrair 1 porque os índices começam em 1 no arquivo .obj
-          var normalIndex = parseInt(vertexData[2]) - 1; // Subtrair 1 porque os índices começam em 1 no arquivo .obj
-  
+          var vertexIndex = parseInt(vertexData[0]); 
           indices.push(vertexIndex);
-          normals.push(normalIndex);
         }
       }
     }
+
+    console.log(vertices);
+    console.log(normals);
+    console.log(indices);
     return { vertices, normals, indices };
   }
 
   renderScene(gl, objFileContent) {
-    // console.log(objFileContent);
     var objData = this.loadOBJ(objFileContent);
+
+    console.log(objData);
     var objVBO = Shader.createVertexBufferObject(gl, objData);
     gl.bindBuffer(gl.ARRAY_BUFFER, objVBO.vbo);
 
