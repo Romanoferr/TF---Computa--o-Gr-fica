@@ -1,6 +1,3 @@
-
-// Q4) ?
-// Escreva o shader de vértices adequado ao programa
 export default
 `#version 300 es
 precision highp float;
