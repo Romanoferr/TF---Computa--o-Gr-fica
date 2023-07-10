@@ -146,7 +146,7 @@ class Scene {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objVBO.indexBuffer);
 
   // Renderizar os vértices
-  var primitiveType = gl.LINES;
+  var primitiveType = gl.TRIANGLES;
   var offset = 0;
   var count = objVBO.numIndices;
 
